@@ -1,0 +1,53 @@
+{
+  "name": "chessground12",
+  "version": "0.1.1",
+  "description": "Extended lichess.org Chess UI",
+  "module": "chessground.js",
+  "typings": "chessground.d.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^8",
+    "@types/chai": "^4.2.12",
+    "@types/mocha": "^8.2.3",
+    "@typescript-eslint/eslint-plugin": "^4",
+    "@typescript-eslint/parser": "^4",
+    "chai": "^4.2.0",
+    "eslint": "^7",
+    "esm": "^3.2.25",
+    "jsdom": "^17.0.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^8.4.0",
+    "prettier": "^2",
+    "rollup": "^2",
+    "rollup-plugin-terser": "^7",
+    "ts-mocha": "^8.0.0",
+    "tslib": "^2",
+    "typescript": "^4.3"
+  },
+  "license": "GPL-3.0",
+  "repository": "https://github.com/uros-5/chessground12",
+  "keywords": [
+    "chess",
+    "lichess",
+    "lichess.org",
+    "chessboard",
+    "ui",
+    "typescript"
+  ],
+  "scripts": {
+    "pretest": "npm run compile",
+    "prepare": "npm run compile",
+    "compile": "tsc --outDir . --sourceMap --declaration",
+    "lint": "eslint src/*.ts",
+    "format": "prettier --write .",
+    "check-format": "prettier --check .",
+    "dist": "rollup --config"
+  },
+  "files": [
+    "/*.js",
+    "/*.d.ts",
+    "/*.js.map",
+    "/src/*.ts"
+  ],
+  "author": "uros-5"
+}
