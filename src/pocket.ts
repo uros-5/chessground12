@@ -26,7 +26,9 @@ export function readPockets(
   if (rWhite) {
     pockets.white = {};
     for (const r of rWhite)
+    {
       pockets.white[util.roleOf(r)] = lc(placementPockets, r, "upper");
+    }
   }
   if (rBlack) {
     pockets.black = {};

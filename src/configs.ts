@@ -67,6 +67,16 @@ export function p(color: Color): PieceLetter[] {
   return [];
 }
 
+export function p2(color: Color): PieceLetter[] {
+  if (color == "white") {
+    return ["K", "Q", "C", "A", "N", "P"];
+  }
+  else if (color == "black") {
+    return ["k", "q", "c", "a", "n", "p"];
+  }
+  return []
+}
+
 export function pieceDropped(piece: cg.Piece, key: cg.Key) {
   console.log(piece, key);
 }
