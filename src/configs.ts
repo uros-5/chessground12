@@ -69,10 +69,10 @@ export function p(color: Color): PieceLetter[] {
 
 export function p2(color: Color): PieceLetter[] {
   if (color == "white") {
-    return ["K", "Q", "C", "A", "N", "P"];
+    return ["K", "Q", "R", "B", "N", "P", "C", "A"];
   }
   else if (color == "black") {
-    return ["k", "q", "c", "a", "n", "p"];
+    return ["k", "q", "r", "b", "n", "p", "c", "a"];
   }
   return []
 }
