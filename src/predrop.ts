@@ -1,5 +1,5 @@
 import * as util from "./util";
-import * as cg from "./types";
+import  * as cg from "./types";
 
 type DropMobility = (x: number, y: number) => boolean;
 
@@ -43,7 +43,7 @@ export function predrop(
 
   // Pieces can be dropped anywhere on the board by default.
   // Mobility will be modified based on variant and piece to match the game rule.
-  let mobility: DropMobility = wholeBoard;
+  const mobility: DropMobility = wholeBoard;
 
   switch (variant) {
     default:

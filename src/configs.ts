@@ -1,7 +1,7 @@
-import { Config } from "./config";
-import { PieceLetter } from "./types";
-import { Color } from "./types";
-import * as cg from "./types";
+import type { Config } from "./config";
+import type { PieceLetter } from "./types";
+import type { Color } from "./types";
+import type * as cg from "./types";
 
 const dests = new Map();
 dests.set("a4", ["a6", "a7"]);
@@ -12,7 +12,7 @@ export const anonConfig: Config = {
   drawable: { enabled: true, visible: true },
   premovable: { enabled: false },
   predroppable: { enabled: false },
-  pocketRoles: p
+  pocketRoles: p,
 };
 export const liveConfig: Config = {
   animation: { enabled: true },
@@ -69,18 +69,17 @@ export function p(color: Color): PieceLetter[] {
 
 export function p2(color: Color): PieceLetter[] {
   if (color == "white") {
-    return ["K", "Q", "R", "B", "N", "P", "C", "A"];
+    return ["K", "Q", "R", "B", "N", "P", "C", "A", "G"];
+  } else if (color == "black") {
+    return ["k", "q", "r", "b", "n", "p", "c", "a", "g"];
   }
-  else if (color == "black") {
-    return ["k", "q", "r", "b", "n", "p", "c", "a"];
-  }
-  return []
+  return [];
 }
 
 export function pieceDropped(piece: cg.Piece, key: cg.Key) {
-  console.log(piece, key);
+  
 }
 
 export function select2(key: cg.Piece) {
-  console.log(key);
+  
 }

@@ -1,6 +1,6 @@
-import { State } from "./state";
+import type { State } from "./state";
 import { key2pos, pieceClasses } from "./util";
-import {
+import type {
   Drawable,
   DrawShape,
   DrawShapePiece,
@@ -8,7 +8,7 @@ import {
   DrawBrushes,
   DrawModifiers,
 } from "./draw";
-import * as cg from "./types";
+import type * as cg from "./types";
 
 export function createElement(tagName: string): SVGElement {
   return document.createElementNS("http://www.w3.org/2000/svg", tagName);

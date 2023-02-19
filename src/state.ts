@@ -1,7 +1,7 @@
 import * as fen from "./fen";
-import { AnimCurrent } from "./anim";
-import { DragCurrent } from "./drag";
-import { Drawable } from "./draw";
+import type { AnimCurrent } from "./anim";
+import type { DragCurrent } from "./drag";
+import type { Drawable } from "./draw";
 import { timer } from "./util";
 import * as cg from "./types";
 

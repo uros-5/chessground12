@@ -1,10 +1,10 @@
-import { State } from "./state";
+import type { State } from "./state";
 import * as drag from "./drag";
 import * as draw from "./draw";
 import { cancelDropMode, drop } from "./drop";
 import { eventPosition, isRightButton } from "./util";
 import { getKeyAtDomPos, whitePov } from "./board";
-import * as cg from "./types";
+import type * as cg from "./types";
 
 type MouchBind = (e: cg.MouchEvent) => void;
 type StateMouchBind = (d: State, e: cg.MouchEvent) => void;

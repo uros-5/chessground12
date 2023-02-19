@@ -1,4 +1,4 @@
-import { State } from "./state";
+import type { State } from "./state";
 import {
   key2pos,
   pieceClasses as pieceNameOf,
@@ -8,9 +8,9 @@ import {
   dropOrigOf,
 } from "./util";
 import { whitePov } from "./board";
-import { AnimCurrent, AnimVectors, AnimVector, AnimFadings } from "./anim";
-import { DragCurrent } from "./drag";
-import * as cg from "./types";
+import type { AnimCurrent, AnimVectors, AnimVector, AnimFadings } from "./anim";
+import type { DragCurrent } from "./drag";
+import type * as cg from "./types";
 
 type PieceName = string; // `$color $role`
 

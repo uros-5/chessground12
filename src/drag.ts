@@ -1,8 +1,8 @@
-import { State } from "./state";
+import type { State } from "./state";
 import * as board from "./board";
 import * as util from "./util";
 import { clear as drawClear } from "./draw";
-import * as cg from "./types";
+import type * as cg from "./types";
 import { anim } from "./anim";
 import { predrop } from "./predrop";
 

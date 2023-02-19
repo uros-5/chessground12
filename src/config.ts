@@ -1,7 +1,7 @@
-import { HeadlessState } from "./state";
+import type { HeadlessState } from "./state";
 import { setCheck, setSelected } from "./board";
 import { read as fenRead } from "./fen";
-import { DrawShape, DrawBrushes } from "./draw";
+import type { DrawShape, DrawBrushes } from "./draw";
 import * as cg from "./types";
 import { setPredropDests, readPockets } from "./pocket";
 

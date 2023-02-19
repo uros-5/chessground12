@@ -1,4 +1,4 @@
-import { HeadlessState } from "./state";
+import type { HeadlessState } from "./state";
 import {
   pos2key,
   key2pos,

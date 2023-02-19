@@ -6,7 +6,7 @@ export const initial: cg.FEN = "";
 //export const initial: cg.FEN = "57/r55/rrrrr";
 
 export function loadPlinths(plinths: []): void {
-  console.log(plinths);
+  
 }
 
 export function read(fen: cg.FEN): cg.Pieces {

@@ -1,6 +1,6 @@
-import { HeadlessState } from "./state";
+import type { HeadlessState } from "./state";
 import { setVisible, createEl, isMiniBoard } from "./util";
-import { colors, letters, Elements, Notation } from "./types";
+import { colors, letters, type Elements, Notation } from "./types";
 import { createElement as createSVG, setAttributes } from "./svg";
 
 type CoordFormat = {

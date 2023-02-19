@@ -3,7 +3,7 @@ import * as util from "./util";
 import { dragNewPiece } from "./drag";
 import { setDropMode, cancelDropMode } from "./drop";
 
-import { HeadlessState, State } from "./state";
+import type { HeadlessState, State } from "./state";
 import { predrop } from "./predrop";
 
 /**
@@ -25,8 +25,7 @@ export function readPockets(
   const rBlack = pocketRoles("black");
   if (rWhite) {
     pockets.white = {};
-    for (const r of rWhite)
-    {
+    for (const r of rWhite) {
       pockets.white[util.roleOf(r)] = lc(placementPockets, r, "upper");
     }
   }
@@ -131,7 +130,6 @@ export function renderPocketsInitial(
         p.addEventListener(name, (e: cg.MouchEvent) => {
           // movable.free is synonymous with editor mode, and right now click-drop not supported for pocket pieces
           if (/*state.movable.free ||*/ state.movable.color === color)
-
             click(state, e);
         })
       );
@@ -177,7 +175,6 @@ export function click(state: HeadlessState, e: cg.MouchEvent): void {
 }
 
 export function drag(state: HeadlessState, e: cg.MouchEvent): void {
-    
   if (e.button !== undefined && e.button !== 0) return; // only touch or left click
   const el = e.target as HTMLElement,
     role = el.getAttribute("data-role") as cg.Role,
@@ -191,7 +188,7 @@ export function drag(state: HeadlessState, e: cg.MouchEvent): void {
   // the selected piece remains selected which is not how board pieces behave and more importantly is counter intuitive
   if (n === 0) return;
 
-  state.events!.pocketSelect!({role,color});
+  state.events!.pocketSelect!({ role, color });
   // always cancel drop mode if it is active
   if (state.dropmode.active) {
     cancelDropMode(state);
@@ -201,7 +198,7 @@ export function drag(state: HeadlessState, e: cg.MouchEvent): void {
       el.setAttribute("canceledDropMode", "true");
     }
   }
-    
+
   if (state.movable.dests) {
     const dropDests = new Map([
       [

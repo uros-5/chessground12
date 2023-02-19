@@ -22,6 +22,14 @@ export const knight: Mobility = (x1, y1, x2, y2) => {
   return (xd === 1 && yd === 2) || (xd === 2 && yd === 1);
 };
 
+
+export const giraffe: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return (xd === 1 && yd === 4) || (xd === 4 && yd === 1);
+};
+
+
 const bishop: Mobility = (x1, y1, x2, y2) => {
   return diff(x1, x2) === diff(y1, y2);
 };
@@ -179,6 +187,9 @@ export function premove(
         case "a-piece":
           mobility = archbishop;
           break; // archbishop
+        case "g-piece":
+          mobility = giraffe;
+          break;
         case "k-piece":
           mobility = chess960
             ? king960(color, rookFilesOf(pieces, color), canCastle)

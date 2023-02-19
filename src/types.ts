@@ -1,12 +1,12 @@
 export type Variant = "shuuro";
 
-export type Color = typeof colors[number];
-export type PieceSide = typeof pieceSides[number];
-export type Letter = typeof letters[number];
+export type Color = (typeof colors)[number];
+export type PieceSide = (typeof pieceSides)[number];
+export type Letter = (typeof letters)[number];
 export type PieceLetter = `${"" | "+"}${Letter | Uppercase<Letter>}`;
 export type Role = `${"" | "p"}${Letter}-piece`;
-export type File = typeof files[number];
-export type Rank = typeof ranks[number];
+export type File = (typeof files)[number];
+export type Rank = (typeof ranks)[number];
 export type Key = "a0" | `${File}${Rank}`;
 export type DropOrig = `${PieceLetter}@`;
 export type Orig = DropOrig | Key;

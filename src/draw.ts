@@ -1,4 +1,4 @@
-import { State } from "./state";
+import type { State } from "./state";
 import {
   unselect,
   cancelMove,
@@ -7,7 +7,7 @@ import {
   whitePov,
 } from "./board";
 import { eventPosition, isRightButton } from "./util";
-import * as cg from "./types";
+import type * as cg from "./types";
 
 export interface DrawShape {
   orig: cg.Key;

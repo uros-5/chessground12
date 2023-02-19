@@ -1,5 +1,5 @@
-import { HeadlessState, State } from "./state";
-import * as cg from "./types";
+import type { HeadlessState, State } from "./state";
+import type * as cg from "./types";
 import * as board from "./board";
 import * as util from "./util";
 import { cancel as dragCancel } from "./drag";
