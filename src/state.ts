@@ -215,7 +215,7 @@ export function defaults(): HeadlessState {
       prevSvgHash: "",
     },
     hold: timer(),
-    dimensions: { width: 12, height: 12 },
+    dimensions: cg.dimensions[0],
     geometry: cg.Geometry.dim12x12,
     variant: "shuuro",
     chess960: false,

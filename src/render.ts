@@ -229,6 +229,9 @@ export function render(s: State): void {
           if (plinthCounter == 8) {
             s.plinthsPlaced = true;
           }
+          else if (plinthCounter == 4 && s.variant == "standard") {
+            s.plinthsPlaced = true;
+          }
         }
       }
     }

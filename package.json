@@ -1,7 +1,7 @@
 {
   "name": "chessground12",
-  "version": "0.1.4",
-  "description": "Extended lichess.org Chess UI",
+  "version": "0.1.6",
+  "description": "Extended lishuuro.org Chess UI",
   "module": "chessground.js",
   "typings": "chessground.d.ts",
   "dependencies": {},

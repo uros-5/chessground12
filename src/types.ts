@@ -1,4 +1,4 @@
-export type Variant = "shuuro";
+export type Variant = "shuuro" | "standard";
 
 export type Color = (typeof colors)[number];
 export type PieceSide = (typeof pieceSides)[number];
@@ -174,8 +174,9 @@ export interface BoardDimensions {
   height: number;
 }
 
-export const enum Geometry {
+export enum Geometry {
   dim12x12,
+  dim8x8,
 }
 
 export const enum Notation {
@@ -189,7 +190,7 @@ export const enum Notation {
   // TODO THAI_ALGEBRAIC,
 }
 
-export const dimensions: BoardDimensions[] = [{ width: 12, height: 12 }];
+export const dimensions: BoardDimensions[] = [{ width: 12, height: 12 }, { width: 8, height: 8 }];
 
 export type PocketPosition = "top" | "bottom";
 export type Pocket = Partial<Record<Role, number>>;
