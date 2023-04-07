@@ -8,6 +8,7 @@ dests.set("a4", ["a6", "a7"]);
 
 export const anonConfig: Config = {
   movable: { free: false, showDests: false },
+  animation: {enabled: true, duration: 200},
   draggable: { enabled: false },
   drawable: { enabled: true, visible: true },
   premovable: { enabled: false },
@@ -15,7 +16,7 @@ export const anonConfig: Config = {
   pocketRoles: p,
 };
 export const liveConfig: Config = {
-  animation: { enabled: true },
+  animation: { enabled: true, duration: 300 },
   turnColor: "white",
   selectable: { enabled: true },
   drawable: { enabled: true, visible: true },

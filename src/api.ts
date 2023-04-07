@@ -35,6 +35,8 @@ export interface Api {
 
   wasmPlinthLoad(pieces: string[]): void;
 
+  setLastMove(from: string, to: string): void;
+
   // click a square programmatically
   selectSquare(key: cg.Key | null, force?: boolean): void;
 
@@ -110,6 +112,10 @@ export function start(state: State, redrawAll: cg.Redraw): Api {
 
     setPlinths(pieces): void {
       anim((state) => board.setPlinths(state, pieces), state);
+    },
+
+    setLastMove(from, to): void {
+      anim((state) => board.setLastMove(state, from, to), state);
     },
 
     selectSquare(key, force): void {

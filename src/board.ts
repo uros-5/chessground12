@@ -38,6 +38,7 @@ export function reset(state: HeadlessState): void {
 }
 
 export function setPieces(state: HeadlessState, pieces: cg.PiecesDiff): void {
+  state.pieces.clear()
   for (const [key, piece] of pieces) {
     if (piece) state.pieces.set(key, piece);
     else state.pieces.delete(key);
@@ -49,6 +50,11 @@ export function setPlinths(state: HeadlessState, plinths: cg.PiecesDiff): void {
     if (piece) state.plinths?.set(key, piece);
     else state.plinths?.delete(key);
   }
+}
+
+export function setLastMove(state: HeadlessState, from: string, to: string): void {
+  state.lastMove= [from as cg.Key, to as cg.Key];
+  //
 }
 
 export function setCheck(
