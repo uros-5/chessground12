@@ -1,17 +1,11 @@
-import type { State } from "./state";
-import {
-  unselect,
-  cancelMove,
-  getKeyAtDomPos,
-  getSnappedKeyAtDomPos,
-  whitePov,
-} from "./board";
-import { eventPosition, isRightButton } from "./util";
-import type * as cg from "./types";
+import type { State } from './state';
+import { unselect, cancelMove, getKeyAtDomPos, getSnappedKeyAtDomPos, whitePov } from './board';
+import { eventPosition, isRightButton } from './util';
+import { Role, Color, Key, NumberPair, MouchEvent } from './types';
 
 export interface DrawShape {
-  orig: cg.Key;
-  dest?: cg.Key;
+  orig: Key;
+  dest?: Key;
   brush?: string;
   modifiers?: DrawModifiers;
   piece?: DrawShapePiece;
@@ -19,8 +13,8 @@ export interface DrawShape {
 }
 
 export interface DrawShapePiece {
-  role: cg.Role;
-  color: cg.Color;
+  role: Role;
+  color: Color;
   promoted?: boolean;
   scale?: number;
 }
@@ -58,29 +52,24 @@ export interface Drawable {
 }
 
 export interface DrawCurrent {
-  orig: cg.Key; // orig key of drawing
-  dest?: cg.Key; // shape dest, or undefined for circle
-  mouseSq?: cg.Key; // square being moused over
-  pos: cg.NumberPair; // relative current position
+  orig: Key; // orig key of drawing
+  dest?: Key; // shape dest, or undefined for circle
+  mouseSq?: Key; // square being moused over
+  pos: NumberPair; // relative current position
   brush: string; // brush name for shape
   snapToValidMove: boolean; // whether to snap to valid piece moves
 }
 
-const brushes = ["green", "red", "blue", "yellow"];
+const brushes = ['green', 'red', 'blue', 'yellow'];
 
-export function start(state: State, e: cg.MouchEvent): void {
+export function start(state: State, e: MouchEvent): void {
   // support one finger touch only
   if (e.touches && e.touches.length > 1) return;
   e.stopPropagation();
   e.preventDefault();
   e.ctrlKey ? unselect(state) : cancelMove(state);
   const pos = eventPosition(e)!,
-    orig = getKeyAtDomPos(
-      pos,
-      whitePov(state),
-      state.dom.bounds(),
-      state.geometry
-    );
+    orig = getKeyAtDomPos(pos, whitePov(state), state.dom.bounds(), state.geometry);
   if (!orig) return;
   state.drawable.current = {
     orig,
@@ -96,23 +85,12 @@ export function processDraw(state: State): void {
   requestAnimationFrame(() => {
     const cur = state.drawable.current;
     if (cur) {
-      const keyAtDomPos = getKeyAtDomPos(
-        cur.pos,
-        whitePov(state),
-        state.dom.bounds(),
-        state.geometry
-      );
+      const keyAtDomPos = getKeyAtDomPos(cur.pos, whitePov(state), state.dom.bounds(), state.geometry);
       if (!keyAtDomPos) {
         cur.snapToValidMove = false;
       }
       const mouseSq = cur.snapToValidMove
-        ? getSnappedKeyAtDomPos(
-            cur.orig,
-            cur.pos,
-            whitePov(state),
-            state.dom.bounds(),
-            state.geometry
-          )
+        ? getSnappedKeyAtDomPos(cur.orig, cur.pos, whitePov(state), state.dom.bounds(), state.geometry)
         : keyAtDomPos;
       if (mouseSq !== cur.mouseSq) {
         cur.mouseSq = mouseSq;
@@ -124,7 +102,7 @@ export function processDraw(state: State): void {
   });
 }
 
-export function move(state: State, e: cg.MouchEvent): void {
+export function move(state: State, e: MouchEvent): void {
   if (state.drawable.current) state.drawable.current.pos = eventPosition(e)!;
 }
 
@@ -151,17 +129,16 @@ export function clear(state: State): void {
   }
 }
 
-function eventBrush(e: cg.MouchEvent): string {
+function eventBrush(e: MouchEvent): string {
   const modA = (e.shiftKey || e.ctrlKey) && isRightButton(e);
-  const modB = e.altKey || e.metaKey || e.getModifierState?.("AltGraph");
+  const modB = e.altKey || e.metaKey || e.getModifierState?.('AltGraph');
   return brushes[(modA ? 1 : 0) + (modB ? 2 : 0)];
 }
 
 function addShape(drawable: Drawable, cur: DrawCurrent): void {
-  const sameShape = (s: DrawShape) =>
-    s.orig === cur.orig && s.dest === cur.dest;
+  const sameShape = (s: DrawShape) => s.orig === cur.orig && s.dest === cur.dest;
   const similar = drawable.shapes.find(sameShape);
-  if (similar) drawable.shapes = drawable.shapes.filter((s) => !sameShape(s));
+  if (similar) drawable.shapes = drawable.shapes.filter(s => !sameShape(s));
   if (!similar || similar.brush !== cur.brush) drawable.shapes.push(cur);
   onChange(drawable);
 }

@@ -1,17 +1,32 @@
-import type { HeadlessState } from "./state";
-import { setCheck, setSelected } from "./board";
-import { read as fenRead } from "./fen";
-import type { DrawShape, DrawBrushes } from "./draw";
-import * as cg from "./types";
-import { setPredropDests, readPockets } from "./pocket";
+import type { HeadlessState } from './state';
+import { setCheck, setSelected } from './board';
+import type { DrawShape, DrawBrushes } from './draw';
+import { setPredropDests, readPockets } from './pocket';
+import {
+  Color,
+  Dests,
+  DropDests,
+  Elements,
+  FEN,
+  Geometry,
+  Key,
+  MoveMetadata,
+  Notation,
+  Piece,
+  PocketRoles,
+  Role,
+  SetPremoveMetadata,
+  Variant,
+  dimensions,
+} from './types';
 
 export interface Config {
-  fen?: cg.FEN; // chess position in Forsyth notation
-  orientation?: cg.Color; // board orientation. white | black
-  turnColor?: cg.Color; // turn to play. white | black
-  check?: cg.Color | boolean; // true for current color, false to unset
-  lastMove?: cg.Key[]; // squares part of the last move ["c3", "c4"]
-  selected?: cg.Key; // square currently selected "a1"
+  fen?: FEN; // chess position in Forsyth notation
+  orientation?: Color; // board orientation. white | black
+  turnColor?: Color; // turn to play. white | black
+  check?: Color | boolean; // true for current color, false to unset
+  lastMove?: Key[]; // squares part of the last move ["c3", "c4"]
+  selected?: Key; // square currently selected "a1"
   coordinates?: boolean; // include coords attributes
   autoCastle?: boolean; // immediately complete the castle by moving the rook after king move
   viewOnly?: boolean; // don't bind events: the user will never be able to move pieces around
@@ -30,16 +45,12 @@ export interface Config {
   };
   movable?: {
     free?: boolean; // all moves are valid - board editor
-    color?: cg.Color | "both"; // color that can move. white | black | both | undefined
-    dests?: cg.Dests; // valid moves. {"a2" ["a3" "a4"] "b1" ["a3" "c3"]}
+    color?: Color | 'both'; // color that can move. white | black | both | undefined
+    dests?: Dests; // valid moves. {"a2" ["a3" "a4"] "b1" ["a3" "c3"]}
     showDests?: boolean; // whether to add the move-dest class on squares
     events?: {
-      after?: (orig: cg.Key, dest: cg.Key, metadata: cg.MoveMetadata) => void; // called after the move has been played
-      afterNewPiece?: (
-        role: cg.Role,
-        key: cg.Key,
-        metadata: cg.MoveMetadata
-      ) => void; // called after a new piece is dropped on the board
+      after?: (orig: Key, dest: Key, metadata: MoveMetadata) => void; // called after the move has been played
+      afterNewPiece?: (role: Role, key: Key, metadata: MoveMetadata) => void; // called after a new piece is dropped on the board
     };
     rookCastle?: boolean; // castle by moving the king to the rook
   };
@@ -47,27 +58,23 @@ export interface Config {
     enabled?: boolean; // allow premoves for color that can not move
     showDests?: boolean; // whether to add the premove-dest class on squares
     castle?: boolean; // whether to allow king castle premoves
-    dests?: cg.Key[]; // premove destinations for the current selection
+    dests?: Key[]; // premove destinations for the current selection
     events?: {
-      set?: (
-        orig: cg.Key,
-        dest: cg.Key,
-        metadata?: cg.SetPremoveMetadata
-      ) => void; // called after the premove has been set
+      set?: (orig: Key, dest: Key, metadata?: SetPremoveMetadata) => void; // called after the premove has been set
       unset?: () => void; // called after the premove has been unset
     };
   };
   predroppable?: {
     enabled?: boolean; // allow predrops for color that can not move
     showDropDests?: boolean;
-    dropDests?: cg.Key[];
+    dropDests?: Key[];
     current?: {
       // See corresponding type in state.ts for more comments
-      role: cg.Role;
-      key: cg.Key;
+      role: Role;
+      key: Key;
     };
     events?: {
-      set?: (role: cg.Role, key: cg.Key) => void; // called after the predrop has been set
+      set?: (role: Role, key: Key) => void; // called after the predrop has been set
       unset?: () => void; // called after the predrop has been unset
     };
   };
@@ -86,17 +93,17 @@ export interface Config {
     change?: () => void; // called after the situation changes on the board
     // called after a piece has been moved.
     // capturedPiece is undefined or like {color: 'white'; 'role': 'queen'}
-    move?: (orig: cg.Key, dest: cg.Key, capturedPiece?: cg.Piece) => void;
-    dropNewPiece?: (piece: cg.Piece, key: cg.Key) => void;
-    select?: (key: cg.Key) => void; // called when a square is selected
-    insert?: (elements: cg.Elements) => void; // when the board DOM has been (re)inserted
-    pocketSelect: (piece: cg.Piece) => void;
+    move?: (orig: Key, dest: Key, capturedPiece?: Piece) => void;
+    dropNewPiece?: (piece: Piece, key: Key) => void;
+    select?: (key: Key) => void; // called when a square is selected
+    insert?: (elements: Elements) => void; // when the board DOM has been (re)inserted
+    pocketSelect: (piece: Piece) => void;
   };
   dropmode?: {
     active?: boolean;
-    piece?: cg.Piece;
+    piece?: Piece;
     showDropDests?: boolean; // whether to add the move-dest class on squares for drops
-    dropDests?: cg.DropDests; // see corresponding state.ts type for comments
+    dropDests?: DropDests; // see corresponding state.ts type for comments
   };
   drawable?: {
     enabled?: boolean; // can draw
@@ -113,11 +120,11 @@ export interface Config {
     };
     onChange?: (shapes: DrawShape[]) => void; // called after drawable shapes change
   };
-  geometry?: cg.Geometry; // dim3x4 | dim5x5 | dim7x7 | dim8x8 | dim9x9 | dim10x8 | dim9x10 | dim10x10
-  variant?: cg.Variant;
+  geometry?: Geometry; // dim3x4 | dim5x5 | dim7x7 | dim8x8 | dim9x9 | dim10x8 | dim9x10 | dim10x10
+  variant?: Variant;
   chess960?: boolean;
-  notation?: cg.Notation;
-  pocketRoles?: cg.PocketRoles; // what pieces have slots in the pocket for each color
+  notation?: Notation;
+  pocketRoles?: PocketRoles; // what pieces have slots in the pocket for each color
 }
 
 export function applyAnimation(state: HeadlessState, config: Config): void {
@@ -136,14 +143,14 @@ export function configure(state: HeadlessState, config: Config): void {
 
   deepMerge(state, config);
 
-  if (config.geometry) state.dimensions = cg.dimensions[config.geometry];
+  if (config.geometry) state.dimensions = dimensions[config.geometry];
 
   // if a fen was provided, replace the pieces
   if (config.fen) {
-    const pieces = fenRead(config.fen);
+    const pieces = new Map();
     // prevent calling cancel() if piece drag is already started from pocket!
-    const draggedPiece = state.pieces.get("a0");
-    if (draggedPiece !== undefined) pieces.set("a0", draggedPiece);
+    const draggedPiece = state.pieces.get('a0');
+    if (draggedPiece !== undefined) pieces.set('a0', draggedPiece);
     state.pieces = pieces;
     state.drawable.shapes = [];
 
@@ -153,8 +160,8 @@ export function configure(state: HeadlessState, config: Config): void {
   }
 
   // apply config values that could be undefined yet meaningful
-  if ("check" in config) setCheck(state, config.check || false);
-  if ("lastMove" in config && !config.lastMove) state.lastMove = undefined;
+  if ('check' in config) setCheck(state, config.check || false);
+  if ('lastMove' in config && !config.lastMove) state.lastMove = undefined;
   // in case of ZH drop last move, there's a single square.
   // if the previous last move had two squares,
   // the merge algorithm will incorrectly keep the second square.
@@ -167,18 +174,18 @@ export function configure(state: HeadlessState, config: Config): void {
   applyAnimation(state, config);
 
   if (!state.movable.rookCastle && state.movable.dests) {
-    const rank = state.movable.color === "white" ? "1" : "8",
-      kingStartPos = ("e" + rank) as cg.Key,
+    const rank = state.movable.color === 'white' ? '1' : '8',
+      kingStartPos = ('e' + rank) as Key,
       dests = state.movable.dests.get(kingStartPos),
       king = state.pieces.get(kingStartPos);
-    if (!dests || !king || king.role !== "k-piece") return;
+    if (!dests || !king || king.role !== 'k-piece') return;
     state.movable.dests.set(
       kingStartPos,
       dests.filter(
-        (d) =>
-          !(d === "a" + rank && dests.includes(("c" + rank) as cg.Key)) &&
-          !(d === "h" + rank && dests.includes(("g" + rank) as cg.Key))
-      )
+        d =>
+          !(d === 'a' + rank && dests.includes(('c' + rank) as Key)) &&
+          !(d === 'h' + rank && dests.includes(('g' + rank) as Key)),
+      ),
     );
   }
 }
@@ -186,12 +193,11 @@ export function configure(state: HeadlessState, config: Config): void {
 // eslint-disable-next-line
 function deepMerge(base: any, extend: any): void {
   for (const key in extend) {
-    if (isObject(base[key]) && isObject(extend[key]))
-      deepMerge(base[key], extend[key]);
+    if (isObject(base[key]) && isObject(extend[key])) deepMerge(base[key], extend[key]);
     else base[key] = extend[key];
   }
 }
 
 function isObject(o: unknown): boolean {
-  return typeof o === "object";
+  return typeof o === 'object';
 }

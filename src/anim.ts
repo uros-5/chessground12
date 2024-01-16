@@ -1,16 +1,16 @@
-import type { State } from "./state";
-import * as util from "./util";
-import type * as cg from "./types";
+import type { State } from './state';
+import { KHz, Key, NumberPair, NumberQuad, Piece, Pieces, Pos } from './types';
+import { allKeys, distanceSq, key2pos, samePiece } from './util';
 
 export type Mutation<A> = (state: State) => A;
 
 // 0,1 animation goal
 // 2,3 animation current status
-export type AnimVector = cg.NumberQuad;
+export type AnimVector = NumberQuad;
 
-export type AnimVectors = Map<cg.Key, AnimVector>;
+export type AnimVectors = Map<Key, AnimVector>;
 
-export type AnimFadings = Map<cg.Key, cg.Piece>;
+export type AnimFadings = Map<Key, Piece>;
 
 export interface AnimPlan {
   anims: AnimVectors;
@@ -19,14 +19,12 @@ export interface AnimPlan {
 
 export interface AnimCurrent {
   start: DOMHighResTimeStamp;
-  frequency: cg.KHz;
+  frequency: KHz;
   plan: AnimPlan;
 }
 
 export function anim<A>(mutation: Mutation<A>, state: State): A {
-  return state.animation.enabled
-    ? animate(mutation, state)
-    : render(mutation, state);
+  return state.animation.enabled ? animate(mutation, state) : render(mutation, state);
 }
 
 export function render<A>(mutation: Mutation<A>, state: State): A {
@@ -36,47 +34,43 @@ export function render<A>(mutation: Mutation<A>, state: State): A {
 }
 
 interface AnimPiece {
-  key: cg.Key;
-  pos: cg.Pos;
-  piece: cg.Piece;
+  key: Key;
+  pos: Pos;
+  piece: Piece;
 }
-type AnimPieces = Map<cg.Key, AnimPiece>;
+type AnimPieces = Map<Key, AnimPiece>;
 
-function makePiece(key: cg.Key, piece: cg.Piece): AnimPiece {
+function makePiece(key: Key, piece: Piece): AnimPiece {
   return {
     key: key,
-    pos: util.key2pos(key),
+    pos: key2pos(key),
     piece: piece,
   };
 }
 
 function closer(piece: AnimPiece, pieces: AnimPiece[]): AnimPiece | undefined {
   return pieces.sort((p1, p2) => {
-    return (
-      util.distanceSq(piece.pos, p1.pos) - util.distanceSq(piece.pos, p2.pos)
-    );
+    return distanceSq(piece.pos, p1.pos) - distanceSq(piece.pos, p2.pos);
   })[0];
 }
 
-function computePlan(prevPieces: cg.Pieces, current: State): AnimPlan {
+function computePlan(prevPieces: Pieces, current: State): AnimPlan {
   const anims: AnimVectors = new Map(),
-    animedOrigs: cg.Key[] = [],
+    animedOrigs: Key[] = [],
     fadings: AnimFadings = new Map(),
     missings: AnimPiece[] = [],
     news: AnimPiece[] = [],
     prePieces: AnimPieces = new Map();
-  let curP: cg.Piece | undefined,
-    preP: AnimPiece | undefined,
-    vector: cg.NumberPair;
+  let curP: Piece | undefined, preP: AnimPiece | undefined, vector: NumberPair;
   for (const [k, p] of prevPieces) {
     prePieces.set(k, makePiece(k, p));
   }
-  for (const key of util.allKeys(current.geometry)) {
+  for (const key of allKeys(current.geometry)) {
     curP = current.pieces.get(key);
     preP = prePieces.get(key);
     if (curP) {
       if (preP) {
-        if (!util.samePiece(curP, preP.piece)) {
+        if (!samePiece(curP, preP.piece)) {
           missings.push(preP);
           news.push(makePiece(key, curP));
         }
@@ -86,7 +80,7 @@ function computePlan(prevPieces: cg.Pieces, current: State): AnimPlan {
   for (const newP of news) {
     preP = closer(
       newP,
-      missings.filter((p) => util.samePiece(newP.piece, p.piece))
+      missings.filter(p => samePiece(newP.piece, p.piece)),
     );
     if (preP) {
       vector = [preP.pos[0] - newP.pos[0], preP.pos[1] - newP.pos[1]];
@@ -128,12 +122,11 @@ function step(state: State, now: DOMHighResTimeStamp): void {
 
 function animate<A>(mutation: Mutation<A>, state: State): A {
   // clone state before mutating it
-  const prevPieces: cg.Pieces = new Map(state.pieces);
+  const prevPieces: Pieces = new Map(state.pieces);
   const result = mutation(state);
   const plan = computePlan(prevPieces, state);
   if (plan.anims.size || plan.fadings.size) {
-    const alreadyRunning =
-      state.animation.current && state.animation.current.start;
+    const alreadyRunning = state.animation.current && state.animation.current.start;
     state.animation.current = {
       start: performance.now(),
       frequency: 1 / state.animation.duration,

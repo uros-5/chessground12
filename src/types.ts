@@ -1,13 +1,13 @@
-export type Variant = "shuuro" | "standard";
+export type Variant = 'shuuro' | 'standard';
 
 export type Color = (typeof colors)[number];
 export type PieceSide = (typeof pieceSides)[number];
 export type Letter = (typeof letters)[number];
-export type PieceLetter = `${"" | "+"}${Letter | Uppercase<Letter>}`;
-export type Role = `${"" | "p"}${Letter}-piece`;
+export type PieceLetter = `${'' | '+'}${Letter | Uppercase<Letter>}`;
+export type Role = `${'' | 'p'}${Letter}-piece`;
 export type File = (typeof files)[number];
 export type Rank = (typeof ranks)[number];
-export type Key = "a0" | `${File}${Rank}`;
+export type Key = 'a0' | `${File}${Rank}`;
 export type DropOrig = `${PieceLetter}@`;
 export type Orig = DropOrig | Key;
 
@@ -84,14 +84,14 @@ export interface KeyedNode extends HTMLElement {
   cgKey: Key;
 }
 export interface PieceNode extends KeyedNode {
-  tagName: "PIECE";
+  tagName: 'PIECE';
   cgPiece: string;
   cgAnimating?: boolean;
   cgFading?: boolean;
   cgDragging?: boolean;
 }
 export interface SquareNode extends KeyedNode {
-  tagName: "SQUARE";
+  tagName: 'SQUARE';
 }
 
 export interface Memo<A> {
@@ -110,63 +110,37 @@ export type Unbind = () => void;
 export type Milliseconds = number;
 export type KHz = number;
 
-export const colors = ["white", "black", "none"] as const;
-export const pieceSides = ["ally", "enemy"] as const;
-export const files = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-] as const;
-export const ranks = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-  "11",
-  "12",
-] as const;
+export const colors = ['white', 'black', 'none'] as const;
+export const pieceSides = ['ally', 'enemy'] as const;
+export const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'] as const;
+export const ranks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] as const;
 export const letters = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
 ] as const;
 
 export interface BoardDimensions {
@@ -190,13 +164,16 @@ export const enum Notation {
   // TODO THAI_ALGEBRAIC,
 }
 
-export const dimensions: BoardDimensions[] = [{ width: 12, height: 12 }, { width: 8, height: 8 }];
+export const dimensions: BoardDimensions[] = [
+  { width: 12, height: 12 },
+  { width: 8, height: 8 },
+];
 
-export type PocketPosition = "top" | "bottom";
+export type PocketPosition = 'top' | 'bottom';
 export type Pocket = Partial<Record<Role, number>>;
 export type Pockets = Partial<Record<Color, Pocket>>;
 export type PocketRoles = (color: Color) => PieceLetter[] | undefined; // type for functions that map a color to possible
 // pieces that can be in pocket for that side
 
-export const eventsDragging = ["mousedown", "touchmove"];
-export const eventsClicking = ["click"];
+export const eventsDragging = ['mousedown', 'touchmove'];
+export const eventsClicking = ['click'];

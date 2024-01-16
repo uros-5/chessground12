@@ -1,29 +1,30 @@
-import type { HeadlessState, State } from "./state";
-import type * as cg from "./types";
-import * as board from "./board";
-import * as util from "./util";
-import { cancel as dragCancel } from "./drag";
-import { predrop } from "./predrop";
+import type { HeadlessState, State } from './state';
+import { cancel as dragCancel } from './drag';
+import { predrop } from './predrop';
+import {
+  unselect,
+  isPredroppable,
+  unsetPremove,
+  unsetPredrop,
+  getKeyAtDomPos,
+  whitePov,
+  dropNewPiece,
+} from './board';
+import { dropOrigOf, eventPosition } from './util';
+import { MouchEvent, Piece } from './types';
 
-export function setDropMode(s: State, piece?: cg.Piece): void {
+export function setDropMode(s: State, piece?: Piece): void {
   s.dropmode.active = true;
   s.dropmode.piece = piece;
 
   dragCancel(s);
-  board.unselect(s);
+  unselect(s);
   if (piece) {
-    if (board.isPredroppable(s)) {
-      s.predroppable.dropDests = predrop(
-        s.pieces,
-        piece,
-        s.geometry,
-        s.variant
-      );
+    if (isPredroppable(s)) {
+      s.predroppable.dropDests = predrop(s.pieces, piece, s.geometry, s.variant);
     } else {
       if (s.movable.dests) {
-        const dropDests = new Map([
-          [piece.role, s.movable.dests.get(util.dropOrigOf(piece.role))!],
-        ]);
+        const dropDests = new Map([[piece.role, s.movable.dests.get(dropOrigOf(piece.role))!]]);
         s.dropmode.active = true;
         s.dropmode.dropDests = dropDests;
       }
@@ -35,26 +36,19 @@ export function cancelDropMode(s: HeadlessState): void {
   s.dropmode.active = false;
 }
 
-export function drop(s: State, e: cg.MouchEvent): void {
+export function drop(s: State, e: MouchEvent): void {
   if (!s.dropmode.active) return;
 
-  board.unsetPremove(s);
-  board.unsetPredrop(s);
+  unsetPremove(s);
+  unsetPredrop(s);
 
   const piece = s.dropmode.piece;
 
   if (piece) {
-    s.pieces.set("a0", piece);
-    const position = util.eventPosition(e);
-    const dest =
-      position &&
-      board.getKeyAtDomPos(
-        position,
-        board.whitePov(s),
-        s.dom.bounds(),
-        s.geometry
-      );
-    if (dest) board.dropNewPiece(s, "a0", dest);
+    s.pieces.set('a0', piece);
+    const position = eventPosition(e);
+    const dest = position && getKeyAtDomPos(position, whitePov(s), s.dom.bounds(), s.geometry);
+    if (dest) dropNewPiece(s, 'a0', dest);
   }
   s.dom.redraw();
 }

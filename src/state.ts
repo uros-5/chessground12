@@ -1,19 +1,41 @@
-import * as fen from "./fen";
-import type { AnimCurrent } from "./anim";
-import type { DragCurrent } from "./drag";
-import type { Drawable } from "./draw";
-import { timer } from "./util";
-import * as cg from "./types";
+import type { AnimCurrent } from './anim';
+import type { DragCurrent } from './drag';
+import type { Drawable } from './draw';
+import {
+  BoardDimensions,
+  Color,
+  Dests,
+  Dom,
+  DropDests,
+  Elements,
+  Exploding,
+  Geometry,
+  Key,
+  KeyPair,
+  MoveMetadata,
+  Notation,
+  Piece,
+  Pieces,
+  Plinths,
+  PocketRoles,
+  Pockets,
+  Role,
+  SetPremoveMetadata,
+  Timer,
+  Variant,
+  dimensions,
+} from './types';
+import { timer } from './util';
 
 export interface HeadlessState {
-  pieces: cg.Pieces;
-  plinths: cg.Plinths;
+  pieces: Pieces;
+  plinths: Plinths;
   plinthsPlaced: boolean;
-  orientation: cg.Color; // board orientation. white | black
-  turnColor: cg.Color; // turn to play. white | black
-  check?: cg.Key; // square currently in check "a2"
-  lastMove?: cg.Key[]; // squares part of the last move ["c3"; "c4"]
-  selected?: cg.Key; // square currently selected "a1"
+  orientation: Color; // board orientation. white | black
+  turnColor: Color; // turn to play. white | black
+  check?: Key; // square currently in check "a2"
+  lastMove?: Key[]; // squares part of the last move ["c3"; "c4"]
+  selected?: Key; // square currently selected "a1"
   coordinates: boolean; // include coords attributes
   autoCastle: boolean; // immediately complete the castle by moving the rook after king move
   viewOnly: boolean; // don't bind events: the user will never be able to move pieces around
@@ -33,16 +55,12 @@ export interface HeadlessState {
   };
   movable: {
     free: boolean; // all moves are valid - board editor
-    color?: cg.Color | "both"; // color that can move. white | black | both
-    dests?: cg.Dests; // valid moves. {"a2" ["a3" "a4"] "b1" ["a3" "c3"]}
+    color?: Color | 'both'; // color that can move. white | black | both
+    dests?: Dests; // valid moves. {"a2" ["a3" "a4"] "b1" ["a3" "c3"]}
     showDests: boolean; // whether to add the move-dest class on squares
     events: {
-      after?: (orig: cg.Key, dest: cg.Key, metadata: cg.MoveMetadata) => void; // called after the move has been played
-      afterNewPiece?: (
-        role: cg.Role,
-        key: cg.Key,
-        metadata: cg.MoveMetadata
-      ) => void; // called after a new piece is dropped on the board
+      after?: (orig: Key, dest: Key, metadata: MoveMetadata) => void; // called after the move has been played
+      afterNewPiece?: (role: Role, key: Key, metadata: MoveMetadata) => void; // called after a new piece is dropped on the board
     };
     rookCastle: boolean; // castle by moving the king to the rook
   };
@@ -50,28 +68,24 @@ export interface HeadlessState {
     enabled: boolean; // allow premoves for color that can not move
     showDests: boolean; // whether to add the premove-dest class on squares
     castle: boolean; // whether to allow king castle premoves
-    dests?: cg.Key[]; // premove destinations for the current selection
-    current?: cg.KeyPair; // keys of the current saved premove ["e2" "e4"]
+    dests?: Key[]; // premove destinations for the current selection
+    current?: KeyPair; // keys of the current saved premove ["e2" "e4"]
     events: {
-      set?: (
-        orig: cg.Key,
-        dest: cg.Key,
-        metadata?: cg.SetPremoveMetadata
-      ) => void; // called after the premove has been set
+      set?: (orig: Key, dest: Key, metadata?: SetPremoveMetadata) => void; // called after the premove has been set
       unset?: () => void; // called after the premove has been unset
     };
   };
   predroppable: {
     enabled: boolean; // allow predrops for color that can not move
     showDropDests: boolean; // whether to add the premove-dest css class on dest squares. Maybe an overkill to have this showDest and showDrop dests in each and every place, but could make sense one day
-    dropDests?: cg.Key[]; // premove destinations for the currently "selected" piece for pre-dropping. Both in case of drag-drop or click-drop
+    dropDests?: Key[]; // premove destinations for the currently "selected" piece for pre-dropping. Both in case of drag-drop or click-drop
     current?: {
       // current saved predrop {role: 'knight'; key: 'e4'}.
-      role: cg.Role;
-      key: cg.Key;
+      role: Role;
+      key: Key;
     };
     events: {
-      set?: (role: cg.Role, key: cg.Key) => void; // called after the predrop has been set
+      set?: (role: Role, key: Key) => void; // called after the predrop has been set
       unset?: () => void; // called after the predrop has been unset
     };
   };
@@ -87,8 +101,8 @@ export interface HeadlessState {
     // used for pocket pieces drops.
     active: boolean;
     showDropDests: boolean;
-    piece?: cg.Piece;
-    dropDests?: cg.DropDests; // Both in case of click-drop and drag-drop from pocket it stores the possible dests from highlighting (TODO:which is not great to use this for both cases imho)
+    piece?: Piece;
+    dropDests?: DropDests; // Both in case of click-drop and drag-drop from pocket it stores the possible dests from highlighting (TODO:which is not great to use this for both cases imho)
   };
   selectable: {
     // disable to enforce dragging over click-click move
@@ -104,35 +118,35 @@ export interface HeadlessState {
     change?: () => void; // called after the situation changes on the board
     // called after a piece has been moved.
     // capturedPiece is undefined or like {color: 'white'; 'role': 'queen'}
-    move?: (orig: cg.Key, dest: cg.Key, capturedPiece?: cg.Piece) => void;
-    dropNewPiece?: (piece: cg.Piece, key: cg.Key) => void;
-    select?: (key: cg.Key) => void; // called when a square is selected
-    insert?: (elements: cg.Elements) => void; // when the board DOM has been (re)inserted
-    pocketSelect?: (piece: cg.Piece) => void;
+    move?: (orig: Key, dest: Key, capturedPiece?: Piece) => void;
+    dropNewPiece?: (piece: Piece, key: Key) => void;
+    select?: (key: Key) => void; // called when a square is selected
+    insert?: (elements: Elements) => void; // when the board DOM has been (re)inserted
+    pocketSelect?: (piece: Piece) => void;
   };
   drawable: Drawable;
-  exploding?: cg.Exploding;
-  hold: cg.Timer;
-  dimensions: cg.BoardDimensions; // number of lines and ranks of the board {width: 10, height: 8}
-  geometry: cg.Geometry; // dim8x8 | dim9x9 | dim10x8 | dim9x10
-  variant: cg.Variant;
+  exploding?: Exploding;
+  hold: Timer;
+  dimensions: BoardDimensions; // number of lines and ranks of the board {width: 10, height: 8}
+  geometry: Geometry; // dim8x8 | dim9x9 | dim10x8 | dim9x10
+  variant: Variant;
   chess960: boolean;
-  notation: cg.Notation;
-  pockets?: cg.Pockets; // undefinied for non-pocket variants. State of pockets for each color
-  pocketRoles?: cg.PocketRoles; // undefinied for non-pocket variants. Possible pieces that a pocket can hold for each color
+  notation: Notation;
+  pockets?: Pockets; // undefinied for non-pocket variants. State of pockets for each color
+  pocketRoles?: PocketRoles; // undefinied for non-pocket variants. Possible pieces that a pocket can hold for each color
 }
 
 export interface State extends HeadlessState {
-  dom: cg.Dom;
+  dom: Dom;
 }
 
 export function defaults(): HeadlessState {
   return {
-    pieces: fen.read(fen.initial),
+    pieces: new Map(),
     plinths: new Map(),
     plinthsPlaced: false,
-    orientation: "white",
-    turnColor: "white",
+    orientation: 'white',
+    turnColor: 'white',
     coordinates: true,
     autoCastle: true,
     viewOnly: false,
@@ -151,7 +165,7 @@ export function defaults(): HeadlessState {
     },
     movable: {
       free: true,
-      color: "both",
+      color: 'both',
       showDests: true,
       events: {},
       rookCastle: true,
@@ -184,7 +198,7 @@ export function defaults(): HeadlessState {
     stats: {
       // on touchscreen, default to "tap-tap" moves
       // instead of drag
-      dragged: !("ontouchstart" in window),
+      dragged: !('ontouchstart' in window),
     },
     events: {},
     drawable: {
@@ -195,30 +209,30 @@ export function defaults(): HeadlessState {
       shapes: [],
       autoShapes: [],
       brushes: {
-        green: { key: "g", color: "#15781B", opacity: 1, lineWidth: 10 },
-        red: { key: "r", color: "#882020", opacity: 1, lineWidth: 10 },
-        blue: { key: "b", color: "#003088", opacity: 1, lineWidth: 10 },
-        yellow: { key: "y", color: "#e68f00", opacity: 1, lineWidth: 10 },
-        paleBlue: { key: "pb", color: "#003088", opacity: 0.4, lineWidth: 15 },
-        paleGreen: { key: "pg", color: "#15781B", opacity: 0.4, lineWidth: 15 },
-        paleRed: { key: "pr", color: "#882020", opacity: 0.4, lineWidth: 15 },
+        green: { key: 'g', color: '#15781B', opacity: 1, lineWidth: 10 },
+        red: { key: 'r', color: '#882020', opacity: 1, lineWidth: 10 },
+        blue: { key: 'b', color: '#003088', opacity: 1, lineWidth: 10 },
+        yellow: { key: 'y', color: '#e68f00', opacity: 1, lineWidth: 10 },
+        paleBlue: { key: 'pb', color: '#003088', opacity: 0.4, lineWidth: 15 },
+        paleGreen: { key: 'pg', color: '#15781B', opacity: 0.4, lineWidth: 15 },
+        paleRed: { key: 'pr', color: '#882020', opacity: 0.4, lineWidth: 15 },
         paleGrey: {
-          key: "pgr",
-          color: "#4a4a4a",
+          key: 'pgr',
+          color: '#4a4a4a',
           opacity: 0.35,
           lineWidth: 15,
         },
       },
       pieces: {
-        baseUrl: "https://lichess1.org/assets/piece/cburnett/",
+        baseUrl: 'https://lichess1.org/assets/piece/cburnett/',
       },
-      prevSvgHash: "",
+      prevSvgHash: '',
     },
     hold: timer(),
-    dimensions: cg.dimensions[0],
-    geometry: cg.Geometry.dim12x12,
-    variant: "shuuro",
+    dimensions: dimensions[0],
+    geometry: Geometry.dim12x12,
+    variant: 'shuuro',
     chess960: false,
-    notation: cg.Notation.ALGEBRAIC,
+    notation: Notation.ALGEBRAIC,
   };
 }
