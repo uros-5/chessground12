@@ -105,7 +105,6 @@ export function unsetPredrop(state: HeadlessState): void {
   }
 }
 
-
 export function baseMove(state: HeadlessState, orig: Key, dest: Key): Piece | boolean {
   const origPiece = state.pieces.get(orig),
     destPiece = state.pieces.get(dest);

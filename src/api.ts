@@ -20,7 +20,7 @@ import {
   whitePov,
 } from './board';
 import { toggleOrientation as toggleOrientation2, stop as stop2 } from './board';
-import { Key, MouchEvent, NumberPair, Piece, PiecesDiff, Redraw,  Unbind } from './types';
+import { Key, MouchEvent, NumberPair, Piece, PiecesDiff, Redraw, Unbind } from './types';
 
 export interface Api {
   // reconfigure the instance. Accepts all config options, except for viewOnly & drawable.visible.
