@@ -142,7 +142,7 @@ function shapeHash(
   { orig, dest, brush, piece, modifiers, customSvg }: DrawShape,
   arrowDests: ArrowDests,
   current: boolean,
-  bounds: ClientRect,
+  bounds: DOMRect,
 ): Hash {
   return [
     bounds.width,
@@ -182,7 +182,7 @@ function renderShape(
   { shape, current, hash }: Shape,
   brushes: DrawBrushes,
   arrowDests: ArrowDests,
-  bounds: ClientRect,
+  bounds: DOMRect,
 ): SVGElement {
   let el: SVGElement;
   if (shape.customSvg) {
@@ -217,7 +217,7 @@ function renderShape(
   return el;
 }
 
-function renderCustomSvg(customSvg: string, pos: Pos, bounds: ClientRect, bd: BoardDimensions): SVGElement {
+function renderCustomSvg(customSvg: string, pos: Pos, bounds: DOMRect, bd: BoardDimensions): SVGElement {
   const [x, y] = pos2user(pos, bounds, bd);
 
   // Translate to top-left of `orig` square
@@ -241,7 +241,7 @@ function renderCircle(
   brush: DrawBrush,
   pos: Pos,
   current: boolean,
-  bounds: ClientRect,
+  bounds: DOMRect,
   bd: BoardDimensions,
 ): SVGElement {
   const o = pos2user(pos, bounds, bd),
@@ -264,7 +264,7 @@ function renderArrow(
   dest: Pos,
   current: boolean,
   shorten: boolean,
-  bounds: ClientRect,
+  bounds: DOMRect,
   bd: BoardDimensions,
 ): SVGElement {
   const m = arrowMargin(shorten && !current),
@@ -292,7 +292,7 @@ function renderPiece(
   baseUrl: string,
   pos: Pos,
   piece: DrawShapePiece,
-  bounds: ClientRect,
+  bounds: DOMRect,
   bd: BoardDimensions,
   orientation: Color,
 ): SVGElement {
@@ -367,7 +367,7 @@ function arrowMargin(shorten: boolean): number {
   return (shorten ? 20 : 10) / 64;
 }
 
-function pos2user(pos: Pos, bounds: ClientRect, bd: BoardDimensions): NumberPair {
+function pos2user(pos: Pos, bounds: DOMRect, bd: BoardDimensions): NumberPair {
   const xScale = Math.min(1, bounds.width / bounds.height) * Math.max(1, bd.height / bd.width);
   const yScale = Math.min(1, bounds.height / bounds.width) * Math.max(1, bd.width / bd.height);
   return [(pos[0] - (bd.width - 1) / 2) * xScale, ((bd.height - 1) / 2 - pos[1]) * yScale];

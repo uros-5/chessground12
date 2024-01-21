@@ -3,7 +3,6 @@ import { type Config, configure, applyAnimation } from './config';
 import { anim, render } from './anim';
 import { cancel as dragCancel, dragNewPiece } from './drag';
 import type { DrawShape } from './draw';
-import { explosion } from './explosion';
 import {
   baseMove,
   baseNewPiece,
@@ -21,7 +20,7 @@ import {
   whitePov,
 } from './board';
 import { toggleOrientation as toggleOrientation2, stop as stop2 } from './board';
-import { Color, Key, MouchEvent, NumberPair, Piece, PiecesDiff, Redraw, Role, Unbind } from './types';
+import { Key, MouchEvent, NumberPair, Piece, PiecesDiff, Redraw,  Unbind } from './types';
 
 export interface Api {
   // reconfigure the instance. Accepts all config options, except for viewOnly & drawable.visible.
@@ -44,10 +43,6 @@ export interface Api {
   setPieces(pieces: PiecesDiff): void;
 
   setPlinths(pieces: PiecesDiff): void;
-
-  wasmPieceLoad(pieces: string[]): void;
-
-  wasmPlinthLoad(pieces: string[]): void;
 
   setLastMove(from: string, to: string): void;
 
@@ -74,9 +69,6 @@ export interface Api {
 
   // cancel current move and prevent further ones
   stop(): void;
-
-  // make squares explode (atomic chess)
-  explode(keys: Key[]): void;
 
   // programmatically draw user shapes
   setShapes(shapes: DrawShape[]): void;
@@ -137,30 +129,6 @@ export function start(state: State, redrawAll: Redraw): Api {
       }
     },
 
-    wasmPieceLoad(pieces: string[]): void {
-      for (let i = 0; i < pieces.length; i += 3) {
-        const square = pieces[i];
-        const piece = pieces[i + 1];
-        const color = pieces[i + 2];
-        state.pieces.set(square as Key, {
-          role: piece as Role,
-          color: color as Color,
-        });
-      }
-    },
-
-    wasmPlinthLoad(plinths: string[]): void {
-      for (let i = 0; i < plinths.length; i += 3) {
-        const square = plinths[i];
-        const piece = plinths[i + 1];
-        const color = plinths[i + 2];
-        state.plinths.set(square as Key, {
-          role: piece as Role,
-          color: color as Color,
-        });
-      }
-    },
-
     move(orig, dest): void {
       anim(state => baseMove(state, orig, dest), state);
     },
@@ -207,10 +175,6 @@ export function start(state: State, redrawAll: Redraw): Api {
         stop2(state);
         dragCancel(state);
       }, state);
-    },
-
-    explode(keys: Key[]): void {
-      explosion(state, keys);
     },
 
     setAutoShapes(shapes: DrawShape[]): void {

@@ -103,7 +103,6 @@ export function premove(
         case 'q-piece':
           mobility = queen;
           break; // queen
-        case 'e-piece': // S-chess elephant
         case 'c-piece':
           mobility = chancellor;
           break; // chancellor

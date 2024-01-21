@@ -54,7 +54,7 @@ export interface Elements {
 }
 export interface Dom {
   elements: Elements;
-  bounds: Memo<ClientRect>;
+  bounds: Memo<DOMRect>;
   redraw: () => void;
   redrawNow: (skipSvg?: boolean) => void;
   unbind?: Unbind;
@@ -128,19 +128,6 @@ export const letters = [
   'k',
   'l',
   'm',
-  'n',
-  'o',
-  'p',
-  'q',
-  'r',
-  's',
-  't',
-  'u',
-  'v',
-  'w',
-  'x',
-  'y',
-  'z',
 ] as const;
 
 export interface BoardDimensions {
@@ -155,13 +142,6 @@ export enum Geometry {
 
 export const enum Notation {
   ALGEBRAIC,
-  SHOGI_ENGLET,
-  SHOGI_ARBNUM,
-  // TODO SHOGI_HANNUM,
-  JANGGI,
-  XIANGQI_ARBNUM,
-  // TODO XIANGQI_HANNUM,
-  // TODO THAI_ALGEBRAIC,
 }
 
 export const dimensions: BoardDimensions[] = [

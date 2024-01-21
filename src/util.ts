@@ -117,7 +117,7 @@ export const distanceSq = (pos1: Pos, pos2: Pos): number => {
 };
 
 export const posToTranslate =
-  (bounds: ClientRect, bd: BoardDimensions): ((pos: Pos, asWhite: boolean) => NumberPair) =>
+  (bounds: DOMRect, bd: BoardDimensions): ((pos: Pos, asWhite: boolean) => NumberPair) =>
   (pos, asWhite) => [
     ((asWhite ? pos[0] : bd.width - 1 - pos[0]) * bounds.width) / bd.width,
     ((asWhite ? bd.height - 1 - pos[1] : pos[1]) * bounds.height) / bd.height,
@@ -152,7 +152,7 @@ export const isMiniBoard = (el: HTMLElement): boolean => {
 export function computeSquareCenter(
   key: Key,
   asWhite: boolean,
-  bounds: ClientRect,
+  bounds: DOMRect,
   bd: BoardDimensions,
 ): NumberPair {
   const pos = key2pos(key);
