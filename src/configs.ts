@@ -1,6 +1,6 @@
-import type { Config } from './config';
-import type { Key, Piece, PieceLetter } from './types';
-import type { Color } from './types';
+import type { Config } from './config.js';
+import type { Key, Piece, PieceLetter } from './types.js';
+import type { Color } from './types.js';
 
 const dests = new Map();
 dests.set('a4', ['a6', 'a7']);

@@ -1,7 +1,7 @@
-import type { State } from './state';
-import { clear as drawClear } from './draw';
-import { anim } from './anim';
-import { predrop } from './predrop';
+import type { State } from './state.js';
+import { clear as drawClear } from './draw.js';
+import { anim } from './anim.js';
+import { predrop } from './predrop.js';
 import {
   whitePov,
   canMove,
@@ -15,8 +15,8 @@ import {
   userMove,
   callUserFunction,
   unselect,
-} from './board';
-import { Key, Piece, NumberPair, PieceNode, MouchEvent, KeyedNode } from './types';
+} from './board.js';
+import { Key, Piece, NumberPair, PieceNode, MouchEvent, KeyedNode } from './types.js';
 import {
   eventPosition,
   pieceClasses,
@@ -27,7 +27,7 @@ import {
   computeSquareCenter,
   distanceSq,
   samePiece,
-} from './util';
+} from './util.js';
 
 export interface DragCurrent {
   orig: Key; // orig key of dragging piece

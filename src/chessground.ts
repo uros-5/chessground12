@@ -1,13 +1,13 @@
-import { type Api, start } from './api';
-import { type Config, configure } from './config';
-import { type HeadlessState, type State, defaults } from './state';
+import { type Api, start } from './api.js';
+import { type Config, configure } from './config.js';
+import { type HeadlessState, type State, defaults } from './state.js';
 
-import { renderWrap } from './wrap';
-import { render, renderResized, updateBounds } from './render';
-import { renderPockets, renderPocketsInitial } from './pocket';
-import { bindBoard, bindDocument } from './events';
-import { renderSvg } from './svg';
-import { memo } from './util';
+import { renderWrap } from './wrap.js';
+import { render, renderResized, updateBounds } from './render.js';
+import { renderPockets, renderPocketsInitial } from './pocket.js';
+import { bindBoard, bindDocument } from './events.js';
+import { renderSvg } from './svg.js';
+import { memo } from './util.js';
 
 export function Chessground(
   element: HTMLElement,

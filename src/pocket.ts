@@ -1,8 +1,8 @@
-import { dragNewPiece } from './drag';
-import { setDropMode, cancelDropMode } from './drop';
+import { dragNewPiece } from './drag.js';
+import { setDropMode, cancelDropMode } from './drop.js';
 
-import type { HeadlessState, State } from './state';
-import { predrop } from './predrop';
+import type { HeadlessState, State } from './state.js';
+import { predrop } from './predrop.js';
 import {
   Color,
   Elements,
@@ -18,8 +18,8 @@ import {
   Role,
   eventsClicking,
   eventsDragging,
-} from './types';
-import { createEl, letterOf, opposite, pieceClasses, roleOf } from './util';
+} from './types.js';
+import { createEl, letterOf, opposite, pieceClasses, roleOf } from './util.js';
 
 /**
  * Logically maybe belongs to fen.ts, but put here to avoid merge conflicts from upsteam

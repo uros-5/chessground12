@@ -18,7 +18,7 @@ import {
   BoardDimensions,
   NumberPair,
   MouchEvent,
-} from './types';
+} from './types.js';
 
 export const invRanks: readonly Rank[] = [...ranks2].reverse();
 

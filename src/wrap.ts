@@ -1,7 +1,7 @@
-import type { HeadlessState } from './state';
-import { setVisible, createEl, isMiniBoard } from './util';
-import { colors, letters, type Elements, Notation } from './types';
-import { createElement as createSVG, setAttributes } from './svg';
+import type { HeadlessState } from './state.js';
+import { setVisible, createEl, isMiniBoard } from './util.js';
+import { colors, letters, type Elements, Notation } from './types.js';
+import { createElement as createSVG, setAttributes } from './svg.js';
 
 type CoordFormat = {
   coords: readonly string[];

@@ -1,6 +1,6 @@
-import type { AnimCurrent } from './anim';
-import type { DragCurrent } from './drag';
-import type { Drawable } from './draw';
+import type { AnimCurrent } from './anim.js';
+import type { DragCurrent } from './drag.js';
+import type { Drawable } from './draw.js';
 import {
   BoardDimensions,
   Color,
@@ -24,8 +24,8 @@ import {
   Timer,
   Variant,
   dimensions,
-} from './types';
-import { timer } from './util';
+} from './types.js';
+import { timer } from './util.js';
 
 export interface HeadlessState {
   pieces: Pieces;

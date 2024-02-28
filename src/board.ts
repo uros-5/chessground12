@@ -1,4 +1,4 @@
-import type { HeadlessState } from './state';
+import type { HeadlessState } from './state.js';
 import {
   pos2key,
   key2pos,
@@ -8,10 +8,10 @@ import {
   computeSquareCenter,
   dropOrigOf,
   kingRoles,
-} from './util';
-import { premove, queen, knight } from './premove';
-import { predrop } from './predrop';
-import { cancelDropMode } from './drop';
+} from './util.js';
+import { premove, queen, knight } from './premove.js';
+import { predrop } from './predrop.js';
+import { cancelDropMode } from './drop.js';
 import {
   Color,
   Geometry,
@@ -23,7 +23,7 @@ import {
   Role,
   SetPremoveMetadata,
   dimensions,
-} from './types';
+} from './types.js';
 
 // eslint-disable-next-line
 export function callUserFunction<T extends (...args: any[]) => void>(

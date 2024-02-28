@@ -1,5 +1,5 @@
-import { Color, Geometry, Key, Pieces, Variant } from './types';
-import { allPos, key2pos, pos2key } from './util';
+import { Color, Geometry, Key, Pieces, Variant } from './types.js';
+import { allPos, key2pos, pos2key } from './util.js';
 
 type Mobility = (x1: number, y1: number, x2: number, y2: number) => boolean;
 

@@ -1,7 +1,7 @@
-import type { HeadlessState } from './state';
-import { setCheck, setSelected } from './board';
-import type { DrawShape, DrawBrushes } from './draw';
-import { setPredropDests, readPockets } from './pocket';
+import type { HeadlessState } from './state.js';
+import { setCheck, setSelected } from './board.js';
+import type { DrawShape, DrawBrushes } from './draw.js';
+import { setPredropDests, readPockets } from './pocket.js';
 import {
   Color,
   Dests,
@@ -18,7 +18,7 @@ import {
   SetPremoveMetadata,
   Variant,
   dimensions,
-} from './types';
+} from './types.js';
 
 export interface Config {
   fen?: FEN; // chess position in Forsyth notation

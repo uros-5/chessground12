@@ -1,6 +1,6 @@
-import type { HeadlessState, State } from './state';
-import { cancel as dragCancel } from './drag';
-import { predrop } from './predrop';
+import type { HeadlessState, State } from './state.js';
+import { cancel as dragCancel } from './drag.js';
+import { predrop } from './predrop.js';
 import {
   unselect,
   isPredroppable,
@@ -9,9 +9,9 @@ import {
   getKeyAtDomPos,
   whitePov,
   dropNewPiece,
-} from './board';
-import { dropOrigOf, eventPosition } from './util';
-import { MouchEvent, Piece } from './types';
+} from './board.js';
+import { dropOrigOf, eventPosition } from './util.js';
+import { MouchEvent, Piece } from './types.js';
 
 export function setDropMode(s: State, piece?: Piece): void {
   s.dropmode.active = true;

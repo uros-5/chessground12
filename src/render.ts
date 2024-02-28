@@ -1,4 +1,4 @@
-import type { State } from './state';
+import type { State } from './state.js';
 import {
   key2pos,
   pieceClasses as pieceNameOf,
@@ -6,11 +6,11 @@ import {
   posToTranslate as posToTranslateFromBounds,
   translate,
   dropOrigOf,
-} from './util';
-import { whitePov } from './board';
-import type { AnimCurrent, AnimVectors, AnimVector, AnimFadings } from './anim';
-import type { DragCurrent } from './drag';
-import { Key, Piece, PieceNode, Pieces, Pos, SquareNode } from './types';
+} from './util.js';
+import { whitePov } from './board.js';
+import type { AnimCurrent, AnimVectors, AnimVector, AnimFadings } from './anim.js';
+import type { DragCurrent } from './drag.js';
+import { Key, Piece, PieceNode, Pieces, Pos, SquareNode } from './types.js';
 
 type PieceName = string; // `$color $role`
 

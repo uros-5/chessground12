@@ -1,8 +1,8 @@
-import type { State } from './state';
-import { type Config, configure, applyAnimation } from './config';
-import { anim, render } from './anim';
-import { cancel as dragCancel, dragNewPiece } from './drag';
-import type { DrawShape } from './draw';
+import type { State } from './state.js';
+import { type Config, configure, applyAnimation } from './config.js';
+import { anim, render } from './anim.js';
+import { cancel as dragCancel, dragNewPiece } from './drag.js';
+import type { DrawShape } from './draw.js';
 import {
   baseMove,
   baseNewPiece,
@@ -18,9 +18,9 @@ import {
   unsetPredrop,
   unsetPremove,
   whitePov,
-} from './board';
-import { toggleOrientation as toggleOrientation2, stop as stop2 } from './board';
-import { Key, MouchEvent, NumberPair, Piece, PiecesDiff, Redraw, Unbind } from './types';
+} from './board.js';
+import { toggleOrientation as toggleOrientation2, stop as stop2 } from './board.js';
+import { Key, MouchEvent, NumberPair, Piece, PiecesDiff, Redraw, Unbind } from './types.js';
 
 export interface Api {
   // reconfigure the instance. Accepts all config options, except for viewOnly & drawable.visible.

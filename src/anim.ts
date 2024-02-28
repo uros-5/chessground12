@@ -1,6 +1,6 @@
-import type { State } from './state';
-import { KHz, Key, NumberPair, NumberQuad, Piece, Pieces, Pos } from './types';
-import { allKeys, distanceSq, key2pos, samePiece } from './util';
+import type { State } from './state.js';
+import { KHz, Key, NumberPair, NumberQuad, Piece, Pieces, Pos } from './types.js';
+import { allKeys, distanceSq, key2pos, samePiece } from './util.js';
 
 export type Mutation<A> = (state: State) => A;
 

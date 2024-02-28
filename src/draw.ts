@@ -1,7 +1,7 @@
-import type { State } from './state';
-import { unselect, cancelMove, getKeyAtDomPos, getSnappedKeyAtDomPos, whitePov } from './board';
-import { eventPosition, isRightButton } from './util';
-import { Role, Color, Key, NumberPair, MouchEvent } from './types';
+import type { State } from './state.js';
+import { unselect, cancelMove, getKeyAtDomPos, getSnappedKeyAtDomPos, whitePov } from './board.js';
+import { eventPosition, isRightButton } from './util.js';
+import { Role, Color, Key, NumberPair, MouchEvent } from './types.js';
 
 export interface DrawShape {
   orig: Key;

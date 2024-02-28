@@ -1,5 +1,5 @@
-import { Geometry, Key, Piece, Pieces, Variant } from './types';
-import { allPos, pos2key } from './util';
+import { Geometry, Key, Piece, Pieces, Variant } from './types.js';
+import { allPos, pos2key } from './util.js';
 
 type DropMobility = (x: number, y: number) => boolean;
 

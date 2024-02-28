@@ -1,10 +1,10 @@
-import type { State } from './state';
-import { cancelDropMode, drop } from './drop';
-import { eventPosition, isRightButton } from './util';
-import { getKeyAtDomPos, whitePov } from './board';
-import { cancel, end, move, start } from './drag';
-import { cancel as cancel2, end as end2, move as move2, start as start2 } from './draw';
-import { MouchEvent, Piece, Unbind } from './types';
+import type { State } from './state.js';
+import { cancelDropMode, drop } from './drop.js';
+import { eventPosition, isRightButton } from './util.js';
+import { getKeyAtDomPos, whitePov } from './board.js';
+import { cancel, end, move, start } from './drag.js';
+import { cancel as cancel2, end as end2, move as move2, start as start2 } from './draw.js';
+import { MouchEvent, Piece, Unbind } from './types.js';
 
 type MouchBind = (e: MouchEvent) => void;
 type StateMouchBind = (d: State, e: MouchEvent) => void;
