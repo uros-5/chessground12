@@ -112,7 +112,7 @@ export function baseMove(state: HeadlessState, orig: Key, dest: Key): Piece | bo
   const captured = destPiece && destPiece.color !== origPiece.color ? destPiece : undefined;
   if (dest === state.selected) unselect(state);
   callUserFunction(state.events.move, orig, dest, captured);
-  if (!state.autoCastle) {
+  if (state.autoCastle) {
     state.pieces.set(dest, origPiece);
     state.pieces.delete(orig);
   }
