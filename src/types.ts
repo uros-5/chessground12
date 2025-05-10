@@ -151,6 +151,7 @@ export interface BoardDimensions {
 export enum Geometry {
   dim12x12,
   dim8x8,
+  dim6x6,
 }
 
 export const enum Notation {
@@ -160,6 +161,7 @@ export const enum Notation {
 export const dimensions: BoardDimensions[] = [
   { width: 12, height: 12 },
   { width: 8, height: 8 },
+  { width: 6, height: 6 },
 ];
 
 export type PocketPosition = 'top' | 'bottom';
